@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <!--Tạo kiểu cho cho bảng-->
+    <style>
+  table, th, td {
+  border: 2px Solid black;
+  border-collapse: collapse;
+  font-size:14px;
+  color:Black;
+}
+
+th, thead {
+  background-color: #0066FF;
+}
+</style> 
+
+  </head>
+  <body>
+  <h3 style="color: blue;font-size:24px;height:10px;"><?= dear ?></h3>
+  <h3 style="color: blue;font-size:24px;height:10px;"><?= tieudeemail ?></h3>
+  <div>
+ 
+
+  <table style="width:100%;line-height:24px;text-align:center;font-weight:bold;">
+
+<!--- Tiêu đề chung cho bảng -->
+      <tr>
+          <!-- Tiêu đề 1,colspan="7" gộp chung 7 cột thành 1 cột,phía trên tiêu đề -->
+          <th colspan="8" style="color: #ffffff;background-color:#1155cc;font-size:24px;height:50px;"> BÁO CÁO SẢN LƯỢNG KHU VỰC CẮM BÀO CA <?= ca ?> NGÀY <?= ngay ?></th>
+      </tr>
+<!--- Các thông tin phía trên bảng output -->
+     <tr>     
+              <!-- Tiêu đề 1-->
+              <th style="color: white;font-size:18px;height:40px;">Nhóm</th>
+              <th style="color: white;font-size:18px;height:40px;">HCs </th>
+              <th style="color: white;font-size:18px;height:40px;">Tổng Sản Lượng	 </th>
+              <th style="color: white;font-size:18px;height:40px;">Chênh Lệch </th>
+              <th style="color: white;font-size:18px;height:40px;"><?= title_nangSuat ?></th>
+              <th style="color: white;font-size:18px;height:40px;">Phế Phẩm </th>                                            
+              <th style="color: white;font-size:18px;height:40px;">Tỉ lệ phế phẩm	 </th>
+      </tr>
+
+      <tr style="font-size: 24px;height: 30px; font-weight: bold;">
+              <td style=""><?= nhom ?></td>
+              <td style=""><?= HCs ?></td>
+              <td style=""><?= tongSanLuong ?></td>
+              <td style="background-color: <?= (parseInt(chenhLech) < 0) ? ('#ff0000') : ('#00ff00') ?>"><?= chenhLech ?></td>
+              <td style="background-color: <?= (parseInt(nangSuat) < 24500) ? ('#ff0000') : ('#00ff00') ?>"><?= nangSuat ?></td>
+              <td style=""><?= phePham ?></td>
+              <td style="background-color: <?= ((parseFloat(tiLePhePham) > 0.42) ? '#ff0000' : ((parseFloat(tiLePhePham) >= 0.36) ? '#ffff00' : '#00ff00')) ?>"><?= tiLePhePham ?></td>
+            <?  console.log(parseFloat(tiLePhePham),(tiLePhePham),"Cuối cungffffff")  ?>
+      </tr> 
+
+
+<!--- Bảng output TE -->
+      <tr>     
+              <!-- Tiêu đề 1-->
+          <th style="color: white;font-size:18px;height:40px;">Cụm Máy	</th>
+          <th style="color: white;font-size:18px;height:40px;">Kế Hoạch	</th>
+          <th style="color: white;font-size:18px;height:40px;"> Thực Tế </th>
+          <th style="color: white;font-size:18px;height:40px;"> Chênh Lệch </th>
+          <th style="color: white;font-size:18px;height:40px;">Nguyên Nhân Thiếu Sản Lượng		</th>
+          <th style="color: white;font-size:18px;height:40px;">Phế Phẩm</th>
+          <th style="color: white;font-size:18px;height:40px;">Nguyên nhân phế phẩm	</th>
+      </tr>
+   <tbody style="background-color:#FFFFFF;">
+            <!-- thân của bảng -->
+            <? 
+            var i = 0;
+          tablerangeValue.forEach(r => {
+            <!-- Nếu dòng cuối cùng thì màu xanh dương #1155cc và tô màu xen kẽ "#FFFFFF" Màu trắng  : "#b7e1cd"  màu xanh nhạt-->
+            var color = (i === tablerangeValue.length - 1) ? "#1155cc" : ((i % 2 === 0) ? "#FFFFFF" : "#cfe2f3");
+             <!--   fontSize: nếu dòng cuối cùng thì kích thước chữ là 24px, còn lại 18 px-->
+            var fontSize = (i === tablerangeValue.length - 1) ? "24px" : "18px";
+             <!--   fontSize: nếu dòng cuối cùng thì kích thước chữ là 24px, còn lại 18 px-->
+            var colorText = (i === tablerangeValue.length - 1) ? "white" : "";
+               <!--   heightLr: nếu dòng cuối cùng thì độ rộng của dòng là 50px, còn lại 30 px-->
+            var heightLr = (i === tablerangeValue.length - 1) ? "40px" : "24px";
+
+           <!-- Chuyển đổi giá trị biến r[5] thành dạng number để so sánh với 0, nếu dòng nào có dấu - thì chuyển thành 0 -->
+          var cellValue = parseInt(r[5]);
+          <!-- Màu nền: Nếu dòng cuối <0 thì màu hồng #cc0000, ngược lại màu xanh lá #6aa84f,: các dòng ngược lại nếu <0 màu hồng, còn lại màu mặc định -->
+           var bgColor = (i === tablerangeValue.length - 1) ? (cellValue < 0 ? "#cc0000" : "#6aa84f") : (cellValue < 0 ? "#cc0000" : "#6aa84f");
+
+          <!-- Màu chữ: Nếu dòng cuối <0 thì màu trắng #ffffff, ngược lại màu đen,: các dòng ngược lại nếu <0 màu trắng #cc0000, còn lại màu mặc định -->
+            <!-- var CellColor = (i === tablerangeValue.length - 1) ? (cellValue < 0 ? "#ffffff" : "black") : (cellValue < 0 ? "#ffffff" : "black"); -->
+            var CellColor = (cellValue === 0 ? "" : (cellValue < 0 ? "#ffffff" : "black"));
+            <!-- Chuyển đổi giá trị biến r[9], r[4] thành dạng number để so sánh chia ra % phế phẩm rồi làm đk tô màu cột r[9]-->
+            var cellValue2 = (parseFloat(r[4])>0 || parseFloat(r[9]) >0 ) ? (parseFloat(r[9])/parseFloat(r[4])) : ( 0);
+          <!-- Màu nền: cellValue2 > 0.0042 : đỏ, cellValue2 > 0.0036 : vàng, cellValue2 > 0.00: xanh lá,còn lại màu mặc định -->
+           var bgColor2 =   (( cellValue2 > 0.0042) ? "#ff0000" : ( cellValue2 >= 0.0036 ? "#ffff00" : (cellValue2 > 0.00 ? "#00ff00" : "") ) ) 
+
+              console.log(cellValue2,  (r[9])/ (r[4]), bgColor2 );
+              
+             <!-- Gán các biến trên vào style -->
+            ?>
+          <tr style="background-color: <?= color ?>; height: <?= heightLr ?>;font-size: <?= fontSize ?>;">
+              <td style="color: Blue;color:<?= colorText ?>;"><?= r[0] ?></td>
+              <td style="color: Blue;color:<?= colorText ?>;"><?= r[2].toLocaleString('en-US') ?></td>
+              <td style="color: Blue;color:<?= colorText ?>;"><?= r[4].toLocaleString('en-US') ?></td>
+              <td style="background-color: <?= bgColor ?>;color: <?= CellColor ?>;"><?= r[5].toLocaleString('en-US') ?></td>
+              <td style="color: Blue;color:<?= colorText ?>;"><?= r[6] ?></td>
+              <td style="background-color:  <?= bgColor2 ?>;"><?= r[9] ?></td>
+              <td style="color:<?= colorText ?>;"><?= r[10] ?></td>
+        
+            </tr>
+            <?
+            i++;
+          })?>
+      </tbody>
+      </table> 
+
+
+
+<br>
+
+
+
+<!-- Bảng 2 về sự cố máy -->
+<table style="width:100%;line-height:30px;text-align:center;font-weight:bold;">
+      <tr>
+          <!-- Tiêu đề 1,colspan="7" gộp chung 7 cột thành 1 cột,phía trên tiêu đề -->
+          <th colspan="8" style="color: #ffffff;background-color:#1c4587;font-size:22px;height:45px;">BÁO CÁO SỰ CỐ MÁY </th>
+      </tr>
+
+                <tr style="background-color: #1c4587;">     
+                        <!-- Tiêu đề 1-->
+                    <th style="color: white;font-size:18px;height:40px;"> Date </th>
+                    <th style="color: white;font-size:18px;height:40px;">Ca</th>
+                    <th style="color: white;font-size:18px;height:40px;"> Cell 	</th>
+                    <th style="color: white;font-size:18px;height:40px;">Loại sự cố	</th>
+                    <th style="color: white;font-size:18px;height:40px;">Downtime/Phế phẩm</th>
+                    <th style="color: white;font-size:18px;height:40px;">Sự cố trên cụm nào	</th>
+                    <th style="color: white;font-size:18px;height:40px;">Nguyên nhân dowtime chi tiết	</th>
+                    <th style="color: white;font-size:18px;height:40px;">Tình trạng máy hiện tại	</th>
+                </tr>
+   <tbody style="background-color:#FFFFFF;">
+            <!-- thân của bảng -->
+            <? 
+            var i = 0;
+          tablerangeValueBang2.forEach(r => {
+            
+            var length = tablerangeValueBang2.length
+            if (length == 0) {
+                  return
+            }
+             <!-- Gán các biến trên vào style -->
+            ?>
+              <tr style="">
+                  <td style=""><?= r[0].toLocaleDateString('en-GB') ?></td>
+                  <td style=""><?= r[1] ?></td>
+                  <td style=""><?= r[2] ?></td>
+                  <td style=""><?= r[4] ?></td>
+                  <td style=""><?= r[6] ?></td>
+                  <td style=""><?= r[7] ?></td>
+                  <td style=""><?= r[9] ?></td>
+                  <td style=""><?= r[11] ?></td>
+            
+              </tr>
+            <?
+            i++;
+          })?>
+      </tbody>
+      </table> 
+
+
+  </div>   
+  </body>
+</html>
