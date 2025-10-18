@@ -113,5 +113,5 @@ function sendNotification(rowData) {
 }
 
 
-//data: Date	Shift	Department	ReferenceNumber	DescriptionVn	ProductCode	Batch	RefQuantity	Unit	AreaNc	GroupNc	MachineGroup	Defect Cost	Total Cost	Tháng	Year
-//2025-01-07	2	PD	NC-001-25	Bao bì hư	A50307	0301252C	32	cs	AMG	A	Máy A4	1.101.204	1.763.627	2025-01	2025
+//Date	Shift	Department	ReferenceNumber	DescriptionVn	ProductCode	Batch	RefQuantity	Unit	AreaNc	GroupNc	MachineGroup	Defect Cost	Total Cost	Tháng	Year
+//2025-01-07	Ca Chiều	Sản Xuất	ABC-01-01-2025	Hư hỏng bao bì và thùng vận chuyển	ABC11101	BATCH-ABCDE	32	Pallet	AMG	AB	Máy ABC	MN0001	901010101010	2025-01	2025
