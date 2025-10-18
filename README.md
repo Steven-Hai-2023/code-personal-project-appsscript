@@ -1,8 +1,4 @@
-### This repo include many project relevant Google Apps Script.
-
-#### Automation process, alert.
-
-#### Using Webhook, Html, ....
+🚀 Google Apps Script Automation Portfolio
 
 
 📋 OverviewA collection of Google Apps Script projects focused on workflow automation, process optimization, and intelligent alerting systems. These solutions integrate Google Workspace tools (Sheets, Docs, Drive) with external services to eliminate manual tasks and improve operational efficiency.
