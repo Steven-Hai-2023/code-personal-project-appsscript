@@ -1,7 +1,11 @@
 # 🚀 Google Apps Script Automation Portfolio
 
 
-## 📋 OverviewA collection of Google Apps Script projects focused on workflow automation, process optimization, and intelligent alerting systems. These solutions integrate Google Workspace tools (Sheets, Docs, Drive) with external services to eliminate manual tasks and improve operational efficiency.
+## 📋 Overview
+A collection of Google Apps Script projects focused on workflow automation, process optimization, and intelligent alerting systems. These solutions integrate Google Workspace tools (Sheets, Docs, Drive) with external services to eliminate manual tasks and improve operational efficiency.
+
+
+<img width="300" height="300" alt="image" src="https://github.com/user-attachments/assets/ff9711bb-4bc2-4107-bd2f-090e9001df49" />
 
 ## 🎯 What's Inside
 This repository contains production-ready automation scripts that:
@@ -207,5 +211,5 @@ Made with ❤️ and ☕ by [Your Name]
 - [📖 Documentation](#-documentation)
 - [🤝 Contributing](#-contributing)
 
-<img width="300" height="300" alt="image" src="https://github.com/user-attachments/assets/ff9711bb-4bc2-4107-bd2f-090e9001df49" />
+
 
