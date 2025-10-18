@@ -1,3 +1,8 @@
+### Using a google sheet file to gather all data relevant.
+### Apps Script and Html to write information into template
+### Print to PDF
+### Using PDF file to Print card.
+
 ### UI
 
 
