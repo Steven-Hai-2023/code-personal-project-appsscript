@@ -1,0 +1,403 @@
+
+ <html>
+
+<head>
+  <meta charset="UTF-8" />
+  <script src="https://unpkg.com/pdf-lib"></script>
+  <script src="https://cdn.jsdelivr.net/npm/moment@2.30.1/moment.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@pdf-lib/fontkit@1.1.1/dist/fontkit.umd.min.js"></script>
+
+</head>
+
+<body>
+
+  <div>Số lượng thẻ kanban mỗi file:</div>
+  <input id="chunkSize" type="number" value="300" />
+
+  <button id="makePdfButton" onclick="makePdf()" style="margin-top: 1em;">Tạo thẻ</button>
+
+  <div id="status" style="margin-top: 1em;"></div>
+
+  <script>
+
+    function getBatch() {
+            return new Promise(resolve => {
+        google.script.run.withSuccessHandler(resolve).getBatch_Date();
+      });
+    }
+
+    function getShift() {
+            return new Promise(resolve => {
+        google.script.run.withSuccessHandler(resolve).getBatch_Shift();
+      });
+    }
+
+    function getDate_Kanban() {
+            return new Promise(resolve => {
+        google.script.run.withSuccessHandler(resolve).getDate_Kanban();
+      });
+    }
+
+    function getData() {
+      return new Promise(resolve => {
+        google.script.run.withSuccessHandler(resolve).getData();
+      });
+    }
+
+    function getTemplateBytes() {
+      return new Promise(resolve => {
+        google.script.run.withSuccessHandler(bytes => {
+          resolve(new Uint8Array(bytes));
+        }).getKanbanTemplate();
+      })
+    }
+
+    function createPdf(base64, name) {
+      return new Promise(resolve => {
+        google.script.run.withSuccessHandler(resolve).createPdf(base64, name);
+      })
+    }
+
+    function copyHis() {
+            return new Promise(resolve => {
+        google.script.run.withSuccessHandler(resolve).copyHis();
+      });
+    }
+
+    
+    function emptyFolder() {
+            return new Promise(resolve => {
+        google.script.run.withSuccessHandler(resolve).emptyFolder();
+      });
+    }
+
+    function getFont() {
+      return new Promise(resolve => {
+        google.script.run.withSuccessHandler(resolve).getFont();
+      })
+    }
+
+
+
+const { PDFDocument, StandardFonts, rgb } = PDFLib
+    async function makePdf() {
+    try{
+      
+      document.getElementById('status').innerHTML = '';
+      document.getElementById('makePdfButton').disabled = true; 
+      document.getElementById('status').innerHTML += '<div>Đang lấy dữ liệu ...</div>';
+      // Xóa all files PDF in Folder
+      await emptyFolder();
+
+      const time_start = new Date();
+
+
+      const data = await getData();
+      const batch = await getBatch();
+      const shift = await getShift();
+      const [ngayKanban, time_Now] = await getDate_Kanban();
+
+      document.getElementById('status').innerHTML += '<div>Đang tải template ...</div>';
+      const templateBytes = await getTemplateBytes();
+      const templateDoc = await PDFLib.PDFDocument.load(templateBytes);
+      // const pdfDoc = await PDFLib.PDFDocument.create(); // Nếu muốn tạo file PDF theo phân trang thì chuyển xuống trước vòng lặp for
+      
+      // Get Calibri font from Google Drive
+      const fontContent = await getFont();
+      const fontBytes = new Uint8Array(fontContent);
+
+      const chunkSize = Number(document.getElementById('chunkSize')?.value || 1);
+      const chunks = _.chunk(data, chunkSize);  //[size=chunkSize]
+      
+      const x1 = 228;
+      const x2 = x1 + 140;
+      const x3 = x1 + 241;
+      const x4 = x1 + 313;
+
+      const y_padding = 10;
+      const y_row1 = y_padding + 270;
+      const y_row2 = y_padding + 209;
+      const y_row3 = y_padding + 147;
+      const y_row4 = y_padding + 83;
+
+      const sizeText = 36;
+
+      document.getElementById('status').innerHTML += '<div>Đang tạo PDF ...</div>';
+      for (let i = 0; i < chunks.length; i++) {
+        const pdfDoc = await PDFLib.PDFDocument.create(); // Create a new PDF document for each chunk
+        const boldFont = await pdfDoc.embedFont(PDFLib.StandardFonts.HelveticaBold);
+              pdfDoc.registerFontkit(fontkit);
+        const calibriFont = await pdfDoc.embedFont(fontBytes);
+        const chunk = chunks[i];
+      try{
+
+        for (const item of chunk) {
+            const [copiedPage] = await pdfDoc.copyPages(templateDoc, [0]);
+
+            const bundleFontSize = item.bundle.length < 7 ? 38
+                   : item.bundle.length < 8 ? 44
+                   : item.bundle.length < 10 ? 36
+                   : item.bundle.length < 13 ? 30
+                   : 24;
+
+            const colorFontSize = item.color.length < 7 ? 38
+                   : item.color.length < 10 ? 34
+                   : item.color.length < 14 ? 30
+                   : item.color.length < 16 ? 22
+                   : 18;
+
+             // Nếu thẻ cuối cùng thì thêm thẻ trống và không ghi thông tin
+            // if(item.quantity == 1){
+            //         // Thêm một trang trống
+            //         // Tạo một trang PDF trống với kích thước tùy ý
+            //         const width = 55.28; // Chiều rộng trong điểm (pt)
+            //         const height = 41.89; // Chiều cao trong điểm (pt)
+            //         const blankPage = pdfDoc.addPage([width, height]);
+            //         continue; 
+            // }
+          
+            // Số thứ tự của thẻ
+            copiedPage.drawText(String(item.cardNumber), { x: 555, y: 381, size: 24 });
+
+
+
+
+            // Mã M
+            copiedPage.drawText(item.resin, { x: x1-15, y: y_row1, size: sizeText, font: boldFont  });
+
+            // Tên SP
+            copiedPage.drawText(item.bundle, { x: x2, y: y_row1, size: bundleFontSize, font: boldFont  });
+
+            // Màu sắc
+            copiedPage.drawText(item.color, { x: x1, y: y_row2, size: colorFontSize, font: calibriFont}); //, font: vietnameseFont
+
+            // Mã lô
+            copiedPage.drawText(String(batch), { x: x1, y: y_row3, size: sizeText, font: boldFont });
+
+            // Máy
+            copiedPage.drawText(item.machine, { x: x2 - 45, y: y_row3, size: sizeText, font: boldFont });
+
+            // Ca
+            copiedPage.drawText((shift), { x: x3 + 10, y: y_row3, size: sizeText, font: boldFont });
+            
+            // Số lượng
+            copiedPage.drawText(String(item.quantity), { x: x1, y:y_row4, size: sizeText, font: boldFont });
+            
+            // Cán
+            copiedPage.drawText("Cán", { x: x3, y:y_row4, size: sizeText, font: boldFont });
+
+            pdfDoc.addPage(copiedPage);
+        }
+
+
+      } catch(e){
+          document.getElementById('status').innerHTML += '<div> e1' + e + '</div>';
+      }
+        
+        const base64Content = await pdfDoc.saveAsBase64({ dataUri: false });
+        // const bytes = await pdfDoc.save();
+        const fileName = `Kanban IM: ${shift}_${ngayKanban} ${time_Now} - Lần [${i + 1}/${chunks.length}]`;
+        const url = await createPdf(base64Content, fileName);
+
+        document.getElementById('status').innerHTML += '<div><a href="' + url + '" target="_blank"> '+ fileName +' </a></div>';
+      } 
+        const url_Folder = 'https://drive.google.com/drive/folders/ID'
+
+        document.getElementById('status').innerHTML += '<div><a href="' + url_Folder + '" target="_blank"> Folder </a></div>';
+
+        // Tính toán thời gian kết thúc
+       const time_end = new Date();
+        // Tính toán thời gian thực thi và hiển thị
+        const time_taken = (time_end - time_start) / 1000; // Đổi sang giây
+        document.getElementById('status').innerHTML += `<div>Done!! Time taken: ${time_taken} seconds</div>`;
+      }catch(e){
+        document.getElementById('status').innerHTML += '<div> e2 ' + e + '</div>';
+      }
+        // Gọi hàm copyHis() sau khi toàn bộ quá trình tạo PDF hoàn tất
+        await copyHis();
+
+      // document.getElementById('status').innerHTML += '<div>Done!!</div>';
+      document.getElementById('makePdfButton').text = 'Tạo thẻ';
+      document.getElementById('makePdfButton').disabled = false;
+
+    }
+
+  </script>
+</body>
+
+</html> 
+
+
+
+
+
+
+<!-- <html>
+<head>
+  <meta charset="utf-8" />
+  <script src="https://unpkg.com/pdf-lib"></script>
+  <script src="https://cdn.jsdelivr.net/npm/moment@2.30.1/moment.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+</head>
+<body>
+
+<div>Số lượng thẻ kanban mỗi file:</div>
+<input id="chunkSize" type="number" value="300" />
+
+<button id="makePdfButton" onclick="makePdf()" style="margin-top: 1em;">Tạo thẻ</button>
+
+<div id="status" style="margin-top: 1em;"></div>
+
+<script>
+    function getBatch() {
+      const dayOfYear = moment().dayOfYear();
+      const lastNumberOfYear = new Date().getFullYear().toString()[3];
+      return `\${dayOfYear}\${lastNumberOfYear}`.padStart(4, '0');
+    }
+
+    function getShift() {
+      const hour = new Date().getHours();
+      if (hour >= 6 && hour < 14) return 1;
+      if (hour >= 14 && hour < 22) return 2;
+      return 3;
+    }
+
+    function getData() {
+      return new Promise(resolve => {
+        google.script.run.withSuccessHandler(resolve).getData();
+      });
+    }
+
+    function getTemplateBytes() {
+      return new Promise(resolve => {
+        google.script.run.withSuccessHandler(bytes => {
+          resolve(new Uint8Array(bytes));
+        }).getKanbanTemplate();
+      });
+    }
+
+    function createPdf(base64, name) {
+      return new Promise(resolve => {
+        google.script.run.withSuccessHandler(resolve).createPdf(base64, name);
+      });
+    }
+
+    async function makePdf() {
+      try {
+        const time_start = new Date();
+
+        document.getElementById('status').innerHTML = '';
+        document.getElementById('makePdfButton').disabled = true;
+
+        document.getElementById('status').innerHTML += '<div>Đang lấy dữ liệu ...</div>';
+        const data = await getData();
+        const batch = getBatch();
+        const shift = getShift();
+        document.getElementById('status').innerHTML += '<div>Đang tải template ...</div>';
+        const templateBytes = await getTemplateBytes();
+        const templateDoc = await PDFLib.PDFDocument.load(templateBytes);
+
+        // Khai báo font chữ một lần và sử dụng lại
+        const boldFont = await templateDoc.embedFont(PDFLib.StandardFonts.HelveticaBold);
+        const regularFont = await templateDoc.embedFont(PDFLib.StandardFonts.Helvetica);
+
+        const chunkSize = Number(document.getElementById('chunkSize')?.value || 1);
+        const chunks = _.chunk(data, chunkSize);
+
+        document.getElementById('status').innerHTML += '<div>Đang tạo PDF ...</div>';
+        
+        // Định nghĩa tọa độ và kích thước duy nhất sau khi tạo templateDoc
+        const x1 = 228;
+        const x2 = x1 + 140;
+        const x3 = x1 + 241;
+        const x4 = x1 + 313;
+        const y_padding = 10;
+        const y_row1 = y_padding + 270;
+        const y_row2 = y_padding + 209;
+        const y_row3 = y_padding + 147;
+        const y_row4 = y_padding + 83;
+        const sizeText = 36;
+
+        for (let i = 0; i < chunks.length; i++) {
+          const pdfDoc = await PDFLib.PDFDocument.create(); // Đặt ở đúng chỗ, khởi tạo mới cho mỗi chunk
+          const chunk = chunks[i];
+          try {
+            for (const item of chunk) {
+              const [copiedPage] = await pdfDoc.copyPages(templateDoc, [0]); // Sao chép trang từ template
+
+              let bundleFontSize = 26; // Mặc định
+              if (item.bundle.length < 15) {
+                  bundleFontSize = 48;
+              } else if (item.bundle.length >= 15 && item.bundle.length < 20) {
+                  bundleFontSize = 30;
+              }
+
+              // Mã / Tên SP
+              copiedPage.drawText(item.bundle, { x: x1, y: y_row1, size: bundleFontSize, font: boldFont });
+
+              // Màu sắc
+              copiedPage.drawText(item.color, { x: x1, y: y_row2, size: sizeText, font: boldFont });
+
+              // Độ cứng - Với điều kiện in đậm
+              const hardnessFont = item.hardness === 'S' ? regularFont : boldFont;
+              copiedPage.drawText(item.hardness, { x: x4, y: y_row2, size: sizeText, font: hardnessFont });
+
+              // Mã lô
+              copiedPage.drawText(batch, { x: x1, y: y_row3, size: sizeText, font: boldFont });
+
+              // Ca
+              copiedPage.drawText(String(shift), { x: x2, y: y_row3, size: sizeText, font: boldFont });
+
+              // Máy
+              copiedPage.drawText(item.machine, { x: x3, y: y_row3, size: sizeText, font: boldFont });
+
+              // Số lượng
+              copiedPage.drawText(String(item.quantity), { x: x1, y: y_row4, size: sizeText, font: boldFont });
+
+              pdfDoc.addPage(copiedPage); // Thêm trang vào tài liệu
+            }
+          } catch (e) {
+            document.getElementById('status').innerHTML += '<div>' + e + '</div>';
+          }
+
+          // Lưu PDF sau khi hoàn thành mỗi chunk
+          const base64Content = await pdfDoc.saveAsBase64({ dataUri: false });
+          const fileName = `\${batch} [\${i + 1}/\${chunks.length}]`;
+          const url = await createPdf(base64Content, fileName);
+
+          document.getElementById('status').innerHTML += '<div><a href="' + url + '" target="_blank"> '+ fileName +' </a></div>';
+        }
+
+        // Tính toán thời gian kết thúc
+        const time_end = new Date();
+        const time_taken = (time_end - time_start) / 1000; // Đổi sang giây
+        document.getElementById('status').innerHTML += `<div>Done!! Time taken: \${time_taken} seconds</div>`;
+      } catch (e) {
+        document.getElementById('status').innerHTML += '<div>' + e + '</div>';
+      }
+
+      // Kích hoạt lại nút sau khi hoàn thành
+      document.getElementById('makePdfButton').textContent = 'Tạo thẻ';
+      document.getElementById('makePdfButton').disabled = false;
+    }
+</script>
+</body>
+</html>
+
+ -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
