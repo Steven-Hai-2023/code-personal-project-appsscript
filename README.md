@@ -1,9 +1,9 @@
-🚀 Google Apps Script Automation Portfolio
+#🚀 Google Apps Script Automation Portfolio
 
 
-📋 OverviewA collection of Google Apps Script projects focused on workflow automation, process optimization, and intelligent alerting systems. These solutions integrate Google Workspace tools (Sheets, Docs, Drive) with external services to eliminate manual tasks and improve operational efficiency.
+###📋 OverviewA collection of Google Apps Script projects focused on workflow automation, process optimization, and intelligent alerting systems. These solutions integrate Google Workspace tools (Sheets, Docs, Drive) with external services to eliminate manual tasks and improve operational efficiency.
 
-🎯 What's Inside
+###🎯 What's Inside
 This repository contains production-ready automation scripts that:
 
 ⚡ Automate repetitive processes - Reduce manual work by 80%+
@@ -13,11 +13,11 @@ This repository contains production-ready automation scripts that:
 🎨 Custom UI/UX - HTML-based interfaces for enhanced user experience
 
 
-🛠️ Technologies Used
+###🛠️ Technologies Used
 TechnologyPurposeGoogle Apps ScriptCore automation engineHTML/CSS/JavaScriptCustom web interfacesWebhooksReal-time event notificationsGoogle Sheets APIData manipulation & storageUrlFetchAppExternal API integrationsTriggersTime-based & event-driven automation
 
 
-✨ Key Features
+###✨ Key Features
 🔄 Automation Capabilities
 
 Time-based triggers for scheduled tasks
@@ -25,14 +25,14 @@ Event-driven execution (onChange, onEdit, onFormSubmit)
 Batch processing for large datasets
 Error handling and retry mechanisms
 
-🔔 Alert Systems
+###🔔 Alert Systems
 
 Email notifications with custom templates
 Webhook integrations (Slack, Discord, custom endpoints)
 Conditional alerting based on business rules
 Escalation workflows
 
-🎨 User Interfaces
+###🎨 User Interfaces
 
 Custom HTML sidebars and dialogs
 Responsive design for mobile compatibility
@@ -40,7 +40,7 @@ Dynamic form generation
 Real-time data validation
 
 
-📊 Impact & Results
+###📊 Impact & Results
 
 ⏱️ Time Savings: 15-20 hours per week across projects
 📉 Error Reduction: 95% decrease in manual data entry errors
@@ -48,7 +48,7 @@ Real-time data validation
 👥 User Adoption: Used by 20+ team members daily
 
 
-🚀 Getting Started
+###🚀 Getting Started
 Prerequisites
 
 Google Account with Apps Script access
@@ -75,7 +75,7 @@ Deploy to your Google Apps Script environment
 
 
 
-📂 Featured Projects
+###📂 Featured Projects
 1. 🎴 Kanban Card Automation
 Automated printing system for Kanban cards using Google Sheets data.
 
@@ -101,7 +101,7 @@ Tech: Templates, PDF export, Drive API
 Impact: 100% on-time report delivery
 
 
-🔐 Security & Best Practices
+###🔐 Security & Best Practices
 
 ✅ No hardcoded credentials (use PropertiesService)
 ✅ Input validation and sanitization
@@ -110,7 +110,7 @@ Impact: 100% on-time report delivery
 ✅ Minimal scope permissions
 
 
-📖 Documentation
+###📖 Documentation
 Each project includes:
 
 Setup Guide: Step-by-step installation
@@ -120,7 +120,7 @@ Troubleshooting: Common issues and solutions
 API Reference: Function documentation
 
 
-🤝 Contributing
+###🤝 Contributing
 Contributions are welcome! Please:
 
 Fork the repository
@@ -130,21 +130,21 @@ Push to the branch (git push origin feature/AmazingFeature)
 Open a Pull Request
 
 
-📝 License
+####📝 License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-📧 Contact
+####📧 Contact
 Your Name - LinkedIn - your.email@example.com
 Portfolio: yourportfolio.com
 
-🌟 Acknowledgments
+####🌟 Acknowledgments
 
 Google Apps Script documentation and community
 Inspiration from workplace automation challenges
 Team feedback and feature requests
 
 
-📈 Roadmap
+#### 📈 Roadmap
 
  Add TypeScript support with clasp
  Implement unit testing framework
