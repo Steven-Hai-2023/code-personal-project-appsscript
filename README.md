@@ -1,21 +1,26 @@
 # 🚀 Google Apps Script Automation Portfolio
 
 
+[![Apps Script](https://img.shields.io/badge/Google%20Apps%20Script-4285F4?style=flat&logo=google&logoColor=white)](https://developers.google.com/apps-script)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 ## 📋 Overview
-A collection of Google Apps Script projects focused on workflow automation, process optimization, and intelligent alerting systems. These solutions integrate Google Workspace tools (Sheets, Docs, Drive) with external services to eliminate manual tasks and improve operational efficiency.
 
+A collection of Google Apps Script projects focused on **workflow automation**, **process optimization**, and **intelligent alerting systems**. These solutions integrate Google Workspace tools (Sheets, Docs, Drive) with external services to eliminate manual tasks and improve operational efficiency.
 
-<img width="300" height="300" alt="image" src="https://github.com/user-attachments/assets/ff9711bb-4bc2-4107-bd2f-090e9001df49" />
+---
 
 ## 🎯 What's Inside
+
 This repository contains production-ready automation scripts that:
 
--⚡ Automate repetitive processes - Reduce manual work by 80%+
-- 🔔 Intelligent alerting - Real-time notifications via email, Slack, and webhooks
-- 🔗 System integrations - Connect Google Workspace with external APIs
-- 📊 Data processing - Transform and validate data across platforms
-- 🎨 Custom UI/UX - HTML-based interfaces for enhanced user experience
+- ⚡ **Automate repetitive processes** - Reduce manual work by 80%+
+- 🔔 **Intelligent alerting** - Real-time notifications via email, Slack, and webhooks
+- 🔗 **System integrations** - Connect Google Workspace with external APIs
+- 📊 **Data processing** - Transform and validate data across platforms
+- 🎨 **Custom UI/UX** - HTML-based interfaces for enhanced user experience
 
+---
 
 ## 🗂️ Project Structure
 ```
@@ -26,13 +31,15 @@ apps-script-automation/
 ├── data-sync-webhook/            # Bi-directional data synchronization
 ├── report-generator/             # Automated report generation & distribution
 └── custom-form-processor/        # Advanced form data handling
-
+```
 
 Each project folder contains:
 - `Code.gs` - Main Apps Script code
 - `README.md` - Project-specific documentation
 - `config.example.js` - Configuration template
 - Screenshots/demos (where applicable)
+
+---
 
 ## 🛠️ Technologies Used
 
@@ -44,7 +51,6 @@ Each project folder contains:
 | **Google Sheets API** | Data manipulation & storage |
 | **UrlFetchApp** | External API integrations |
 | **Triggers** | Time-based & event-driven automation |
-
 
 ---
 
